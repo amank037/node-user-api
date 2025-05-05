@@ -5,7 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>webservice</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+          background-color: #f4f4f4;
+      }
+      .container {
+          max-width: 800px;
+          margin: 0 auto;
+          background: white;
+          padding: 30px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      h1 {
+          color: #333;
+          text-align: center;
+          margin-bottom: 30px;
+      }
+      .form-group {
+          margin-bottom: 15px;
+      }
+      label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+          color: #555;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          box-sizing: border-box;
+          font-size: 15px;
+      }
+      input:focus {
+          outline: none;
+          border-color: #4CAF50;
+          box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+      }
+      fieldset {
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 15px;
+          margin-bottom: 20px;
+      }
+      legend {
+          padding: 0 10px;
+          font-weight: bold;
+          color: #555;
+      }
+      button {
+          background-color: #4CAF50;
+          color: white;
+          padding: 12px 20px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 16px;
+          width: 100%;
+          margin-top: 10px;
+      }
+      button:hover {
+          background-color: #45a049;
+      }
+      .navigation {
+          margin-top: 20px;
+          text-align: center;
+      }
+      .navigation a {
+          color: #4CAF50;
+          text-decoration: none;
+          margin: 0 10px;
+          display: inline-block;
+          padding: 5px 0;
+      }
+      .navigation a:hover {
+          text-decoration: underline;
+      }
+      .success-message {
+          display: none;
+          background-color: #dff0d8;
+          color: #3c763d;
+          padding: 15px;
+          margin-bottom: 20px;
+          border-radius: 4px;
+          text-align: center;
+      }
+      .error-message {
+          display: none;
+          background-color: #f2dede;
+          color: #a94442;
+          padding: 15px;
+          margin-bottom: 20px;
+          border-radius: 4px;
+          text-align: center;
+      }
+  </style>
 </head>
 <body>
     <h2>User Form</h2>

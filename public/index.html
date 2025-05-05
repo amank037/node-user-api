@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webservice</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <h2>User Form</h2>
+    <form id="userForm">
+        <label>First Name: <input type="text" id="firstName" name="firstName" required></label><br>
+        <label>Last Name: <input type="text" id="lastName" name="lastName" required></label><br>
+        <label>Mobile No: <input type="text" id="mobile" name="mobile" required></label><br>
+        <label>Email: <input type="email" id="email" name="email" required></label><br>
+    <fieldset>
+        <legend>Address:</legend>
+        <label>Street: <input type="text" id="street" name="street"></label><br>
+        <label>City: <input type="text" id="city" name="city"></label><br>
+        <label>State: <input type="text" id="state" name="state"></label><br>
+        <label>Country: <input type="text" id="country" name="country"></label><br>
+    </fieldset>
+        <label>Login ID: <input type="text" id="loginId" name="loginId" required></label><br>
+        <label>Password: <input type="password" id="password" name="password" required></label><br><br>
+
+    <button type="submit">Submit</button>         
+    </form>
+
+    <script>
+        $('#userForm').submit(function (e) {
+          e.preventDefault();
+      
+          const userData = {
+            firstName: $('#firstName').val(),
+            lastName: $('#lastName').val(),
+            mobile: $('#mobile').val(),
+            email: $('#email').val(),
+            address: {
+              street: $('#street').val(),
+              city: $('#city').val(),
+              state: $('#state').val(),
+              country: $('#country').val(),
+            },
+            loginId: $('#loginId').val(),
+            password: $('#password').val(),
+          };
+          console.log(userData)
+          $.ajax({
+            url: 'http://localhost:3000/users',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(userData),
+            success: function (response) {
+              alert('user created')
+              $('#userForm')[0].reset()
+            },
+            error: function (xhr) {
+              alert('failed to create user: ' + xhr.responseText)
+            }
+          })
+        })
+      </script>
+      
+</body>
+<a href="/users.html"> -> View All Users</a>
+</html>

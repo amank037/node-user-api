@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>webservice</title>
+    <title>User Registration</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
       body {
           font-family: Arial, sans-serif;
           margin: 0 auto;
           padding: 20px;
-          background-color: #ffffff;
+          background-color: #f9f9f9;
           width: 600px;
       }
       .container {
@@ -49,6 +49,16 @@
           outline: none;
           border-color: #4CAF50;
           box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+      }
+      input.error {
+          border-color: #a94442;
+          background-color: #fff6f6;
+      }
+      .error-text {
+          color: #a94442;
+          font-size: 12px;
+          margin-top: 5px;
+          display: none;
       }
       fieldset {
           border: 1px solid #ddd;
@@ -110,60 +120,251 @@
   </style>
 </head>
 <body>
-    <h2>User Form</h2>
-    <form id="userForm">
-        <label>First Name: <input type="text" id="firstName" name="firstName" required></label><br>
-        <label>Last Name: <input type="text" id="lastName" name="lastName" required></label><br>
-        <label>Mobile No: <input type="text" id="mobile" name="mobile" required></label><br>
-        <label>Email: <input type="email" id="email" name="email" required></label><br>
-    <fieldset>
-        <legend>Address:</legend>
-        <label>Street: <input type="text" id="street" name="street"></label><br>
-        <label>City: <input type="text" id="city" name="city"></label><br>
-        <label>State: <input type="text" id="state" name="state"></label><br>
-        <label>Country: <input type="text" id="country" name="country"></label><br>
-    </fieldset>
-        <label>Login ID: <input type="text" id="loginId" name="loginId" required></label><br>
-        <label>Password: <input type="password" id="password" name="password" required></label><br><br>
-
-    <button type="submit">Submit</button>         
-    </form>
+    <div class="container">
+        <h1>User Registration</h1>
+        
+        <div class="success-message" id="successMessage">
+            User created successfully!
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            Failed to create user. Please check the form.
+        </div>
+        
+        <form id="userForm">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+                <div class="error-text" id="firstNameError">First name should only contain letters and spaces</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
+                <div class="error-text" id="lastNameError">Last name should only contain letters and spaces</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="mobile">Mobile No:</label>
+                <input type="text" id="mobile" name="mobile" required>
+                <div class="error-text" id="mobileError">Mobile number must be 10 digits</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-text" id="emailError">Invalid email format</div>
+            </div>
+            
+            <fieldset>
+                <legend>Address</legend>
+                <div class="form-group">
+                    <label for="street">Street:</label>
+                    <input type="text" id="street" name="street">
+                </div>
+                
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" required>
+                    <div class="error-text" id="cityError">City should only contain letters and spaces</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="state">State:</label>
+                    <input type="text" id="state" name="state" required>
+                    <div class="error-text" id="stateError">State should only contain letters and spaces</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="country">Country:</label>
+                    <input type="text" id="country" name="country" required>
+                    <div class="error-text" id="countryError">Country should only contain letters and spaces</div>
+                </div>
+            </fieldset>
+            
+            <div class="form-group">
+                <label for="loginId">Login ID:</label>
+                <input type="text" id="loginId" name="loginId" required>
+                <div class="error-text" id="loginIdError">Login ID must be 8-20 characters</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <div class="error-text" id="passwordError">Password must be at least 6 characters with 1 uppercase, 1 lowercase, and 1 special character</div>
+            </div>
+            
+            <button type="submit">Register</button>
+        </form>
+        
+        <div class="navigation">
+            <a href="/users.html">View All Users</a>
+        </div>
+    </div>
 
     <script>
-        $('#userForm').submit(function (e) {
-          e.preventDefault();
-      
-          const userData = {
-            firstName: $('#firstName').val(),
-            lastName: $('#lastName').val(),
-            mobile: $('#mobile').val(),
-            email: $('#email').val(),
-            address: {
-              street: $('#street').val(),
-              city: $('#city').val(),
-              state: $('#state').val(),
-              country: $('#country').val(),
-            },
-            loginId: $('#loginId').val(),
-            password: $('#password').val(),
-          };
-          console.log(userData)
-          $.ajax({
-            url: 'https://node-user-api-t1lz.onrender.com/users',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(userData),
-            success: function (response) {
-              alert('user created')
-              $('#userForm')[0].reset()
-            },
-            error: function (xhr) {
-              alert('failed to create user: ' + xhr.responseText)
+        // Front-end validation functions
+        function validateName(name) {
+            return /^[A-Za-z\s]+$/.test(name);
+        }
+        
+        function validateMobile(mobile) {
+            return /^[0-9]{10}$/.test(mobile);
+        }
+        
+        function validateEmail(email) {
+            return /^\S+@\S+\.\S+$/.test(email);
+        }
+        
+        function validatePassword(password) {
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{6,}$/.test(password);
+        }
+        
+        function validateLoginId(loginId) {
+            return loginId.length >= 8 && loginId.length <= 20;
+        }
+        
+        // Clear all error messages
+        function clearErrors() {
+            $('.error-text').hide();
+            $('input').removeClass('error');
+            $('#errorMessage').hide();
+            $('#successMessage').hide();
+        }
+        
+        // Client-side validation
+        function validateForm() {
+            clearErrors();
+            let isValid = true;
+            
+            // First name validation
+            if (!validateName($('#firstName').val())) {
+                $('#firstName').addClass('error');
+                $('#firstNameError').show();
+                isValid = false;
             }
-          })
-        })
-      </script>
-      
+            
+            // Last name validation
+            if (!validateName($('#lastName').val())) {
+                $('#lastName').addClass('error');
+                $('#lastNameError').show();
+                isValid = false;
+            }
+            
+            // Mobile validation
+            if (!validateMobile($('#mobile').val())) {
+                $('#mobile').addClass('error');
+                $('#mobileError').show();
+                isValid = false;
+            }
+            
+            // Email validation
+            if (!validateEmail($('#email').val())) {
+                $('#email').addClass('error');
+                $('#emailError').show();
+                isValid = false;
+            }
+            
+            // Address validations
+            if ($('#city').val() && !validateName($('#city').val())) {
+                $('#city').addClass('error');
+                $('#cityError').show();
+                isValid = false;
+            }
+            
+            if ($('#state').val() && !validateName($('#state').val())) {
+                $('#state').addClass('error');
+                $('#stateError').show();
+                isValid = false;
+            }
+            
+            if ($('#country').val() && !validateName($('#country').val())) {
+                $('#country').addClass('error');
+                $('#countryError').show();
+                isValid = false;
+            }
+            
+            // Login ID validation
+            if (!validateLoginId($('#loginId').val())) {
+                $('#loginId').addClass('error');
+                $('#loginIdError').show();
+                isValid = false;
+            }
+            
+            // Password validation
+            if (!validatePassword($('#password').val())) {
+                $('#password').addClass('error');
+                $('#passwordError').show();
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Form submission
+        $('#userForm').submit(function(e) {
+            e.preventDefault();
+            
+            // Do client-side validation first
+            if (!validateForm()) {
+                $('#errorMessage').text('Please fix the errors in the form.').show();
+                return;
+            }
+            
+            const userData = {
+                firstName: $('#firstName').val(),
+                lastName: $('#lastName').val(),
+                mobile: $('#mobile').val(),
+                email: $('#email').val(),
+                address: {
+                    street: $('#street').val(),
+                    city: $('#city').val(),
+                    state: $('#state').val(),
+                    country: $('#country').val(),
+                },
+                loginId: $('#loginId').val(),
+                password: $('#password').val(),
+            };
+            
+            $.ajax({
+                url: 'https://node-user-api-t1lz.onrender.com/users',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(userData),
+                success: function(response) {
+                    $('#successMessage').show();
+                    $('#userForm')[0].reset();
+                    setTimeout(function() {
+                        $('#successMessage').fadeOut();
+                    }, 3000);
+                },
+                error: function(xhr) {
+                    // Try to parse the error response
+                    try {
+                        const errorData = JSON.parse(xhr.responseText);
+                        let errorMessage = 'Failed to create user: ';
+                        
+                        // Handle mongoose validation errors
+                        if (errorData.errors) {
+                            Object.keys(errorData.errors).forEach(field => {
+                                const errorField = field.replace(/\./, '');
+                                $(`#${errorField}`).addClass('error');
+                                $(`#${errorField}Error`).text(errorData.errors[field].message).show();
+                            });
+                            errorMessage += 'Please check the highlighted fields';
+                        } else if (errorData.message) {
+                            errorMessage += errorData.message;
+                        } else {
+                            errorMessage += 'Unknown error occurred';
+                        }
+                        
+                        $('#errorMessage').text(errorMessage).show();
+                    } catch (e) {
+                        $('#errorMessage').text('Failed to create user: ' + xhr.responseText).show();
+                    }
+                }
+            });
+        });
+    </script>
 </body>
-<a href="/users.html"> -> View All Users</a>
 </html>

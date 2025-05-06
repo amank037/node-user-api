@@ -13,7 +13,7 @@ app.use(express.json())
 app.post('/users', async (req, res) => {
     try {
         const newUser = new User(req.body)
-
+        await newUser.validate()
         await newUser.save()
 
         res.status(201).send({ message: 'user created'})
